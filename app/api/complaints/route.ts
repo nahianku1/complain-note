@@ -13,7 +13,7 @@ function parseStatus(value: unknown): ComplaintStatus | null {
 
 export async function GET() {
   if (!(await getCurrentUser())) return NextResponse.json({ error: "Authentication required." }, { status: 401 });
-  return NextResponse.json({ complaints: getComplaints() });
+  return NextResponse.json({ complaints: await getComplaints() });
 }
 
 export async function POST(request: Request) {
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Status must be pending or completed." }, { status: 400 });
   }
 
-  const complaint = createComplaint({
+  const complaint = await createComplaint({
     userId: String(body.userId).trim(),
     entryBy: currentUser.username,
     phoneNumber: String(body.phoneNumber).trim(),

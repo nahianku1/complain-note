@@ -35,7 +35,7 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
   }
 
   try {
-    const complaint = updateComplaint(id, {
+    const complaint = await updateComplaint(id, {
       userId: String(body.userId).trim(),
       phoneNumber: String(body.phoneNumber).trim(),
       whatsappNumber: String(body.whatsappNumber).trim(),
@@ -60,7 +60,7 @@ export async function DELETE(_request: Request, context: { params: Promise<{ id:
   }
 
   try {
-    return NextResponse.json({ deletedComplaint: deleteComplaint(id) });
+    return NextResponse.json({ deletedComplaint: await deleteComplaint(id) });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unable to delete complaint.";
     return NextResponse.json({ error: message }, { status: message === "Complaint not found." ? 404 : 409 });

@@ -13,12 +13,17 @@ export async function POST(request: Request) {
     return NextResponse.json(formatValidationError(result.error), { status: 400 });
   }
 
-  const user = findUserByIdentifier(result.data.identifier);
-  if (!user || !(await verifyPassword(result.data.password, user.passwordHash))) {
-    return NextResponse.json({ error: "The email/mobile or password is incorrect." }, { status: 401 });
-  }
+  try {
+    const user = await findUserByIdentifier(result.data.identifier);
+    if (!user || !(await verifyPassword(result.data.password, user.passwordHash))) {
+      return NextResponse.json({ error: "The username/email/mobile or password is incorrect." }, { status: 401 });
+    }
 
-  const safeUser = toSafeUser(user);
-  await createJwtCookie(safeUser);
-  return NextResponse.json({ user: safeUser });
+    const safeUser = toSafeUser(user);
+    await createJwtCookie(safeUser);
+    return NextResponse.json({ user: safeUser });
+  } catch (error) {
+    console.error("Login database error", error);
+    return NextResponse.json({ error: "We could not reach the database right now. Please try again shortly." }, { status: 503 });
+  }
 }

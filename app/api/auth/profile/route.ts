@@ -15,21 +15,21 @@ export async function PATCH(request: Request) {
   if (!result.success) return NextResponse.json(formatValidationError(result.error), { status: 400 });
 
   const { username, email, mobile } = result.data;
-  const usernameOwner = findUserByUsername(username);
+  const usernameOwner = await findUserByUsername(username);
   if (usernameOwner && usernameOwner.id !== currentUser.id) {
     return NextResponse.json({ error: "That username is already taken.", fieldErrors: { username: "Username is already taken." } }, { status: 409 });
   }
-  const emailOwner = findUserByEmail(email);
+  const emailOwner = await findUserByEmail(email);
   if (emailOwner && emailOwner.id !== currentUser.id) {
     return NextResponse.json({ error: "An account with this email already exists.", fieldErrors: { email: "Email is already registered." } }, { status: 409 });
   }
-  const mobileOwner = findUserByMobile(mobile);
+  const mobileOwner = await findUserByMobile(mobile);
   if (mobileOwner && mobileOwner.id !== currentUser.id) {
     return NextResponse.json({ error: "An account with this mobile number already exists.", fieldErrors: { mobile: "Mobile number is already registered." } }, { status: 409 });
   }
 
   try {
-    return NextResponse.json({ user: updateUserProfile(currentUser.id, { username, email, mobile }) });
+    return NextResponse.json({ user: await updateUserProfile(currentUser.id, { username, email, mobile }) });
   } catch {
     return NextResponse.json({ error: "We could not update your profile right now. Please try again." }, { status: 500 });
   }

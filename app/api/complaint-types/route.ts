@@ -6,7 +6,7 @@ export const runtime = "nodejs";
 
 export async function GET() {
   if (!(await getCurrentUser())) return NextResponse.json({ error: "Authentication required." }, { status: 401 });
-  return NextResponse.json({ complaintTypes: getComplaintTypes() });
+  return NextResponse.json({ complaintTypes: await getComplaintTypes() });
 }
 
 export async function POST(request: Request) {
@@ -23,7 +23,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    return NextResponse.json({ complaintType: createComplaintType(name) }, { status: 201 });
+    return NextResponse.json({ complaintType: await createComplaintType(name) }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: error instanceof Error ? error.message : "Unable to save complaint type." }, { status: 409 });
   }

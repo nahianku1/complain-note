@@ -14,21 +14,22 @@ export async function POST(request: Request) {
     return NextResponse.json(formatValidationError(result.error), { status: 400 });
   }
 
-  const { username, email, mobile, password } = result.data;
-  if (findUserByUsername(username)) {
-    return NextResponse.json({ error: "That username is already taken.", fieldErrors: { username: "Username is already taken." } }, { status: 409 });
-  }
-  if (findUserByEmail(email)) {
-    return NextResponse.json({ error: "An account with this email already exists.", fieldErrors: { email: "Email is already registered." } }, { status: 409 });
-  }
-  if (findUserByMobile(mobile)) {
-    return NextResponse.json({ error: "An account with this mobile number already exists.", fieldErrors: { mobile: "Mobile number is already registered." } }, { status: 409 });
-  }
-
   try {
-    const user = createUser({ username, email, mobile, passwordHash: await hashPassword(password) });
+    const { username, email, mobile, password } = result.data;
+    if (await findUserByUsername(username)) {
+      return NextResponse.json({ error: "That username is already taken.", fieldErrors: { username: "Username is already taken." } }, { status: 409 });
+    }
+    if (await findUserByEmail(email)) {
+      return NextResponse.json({ error: "An account with this email already exists.", fieldErrors: { email: "Email is already registered." } }, { status: 409 });
+    }
+    if (await findUserByMobile(mobile)) {
+      return NextResponse.json({ error: "An account with this mobile number already exists.", fieldErrors: { mobile: "Mobile number is already registered." } }, { status: 409 });
+    }
+
+    const user = await createUser({ username, email, mobile, passwordHash: await hashPassword(password) });
     return NextResponse.json({ user }, { status: 201 });
-  } catch {
-    return NextResponse.json({ error: "We could not create your account right now. Please try again." }, { status: 500 });
+  } catch (error) {
+    console.error("Signup database error", error);
+    return NextResponse.json({ error: "We could not reach the database right now. Please try again shortly." }, { status: 503 });
   }
 }

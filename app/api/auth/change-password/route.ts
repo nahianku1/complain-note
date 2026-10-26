@@ -14,7 +14,7 @@ export async function POST(request: Request) {
   const result = changePasswordSchema.safeParse(body);
   if (!result.success) return NextResponse.json(formatValidationError(result.error), { status: 400 });
 
-  const storedUser = findUserById(currentUser.id);
+  const storedUser = await findUserById(currentUser.id);
   if (!storedUser || !(await verifyPassword(result.data.currentPassword, storedUser.passwordHash))) {
     return NextResponse.json({ error: "The current password is incorrect.", fieldErrors: { currentPassword: "Current password is incorrect." } }, { status: 400 });
   }

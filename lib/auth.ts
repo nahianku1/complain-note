@@ -25,11 +25,11 @@ export async function verifyPassword(password: string, passwordHash: string) {
   return bcrypt.compare(password, passwordHash);
 }
 
-export function findUserByIdentifier(identifier: string) {
+export async function findUserByIdentifier(identifier: string) {
   const normalized = normalizeBangladeshMobile(identifier);
   if (normalized) return findUserByMobile(normalized);
   const value = identifier.trim().toLowerCase();
-  return findUserByEmail(value) || findUserByUsername(value);
+  return (await findUserByEmail(value)) || findUserByUsername(value);
 }
 
 export async function setAuthCookies(user: AuthUser) {
@@ -54,7 +54,7 @@ export async function getCurrentUser() {
 
   const tokenUser = await verifyAccessToken(token);
   if (!tokenUser) return undefined;
-  const user = findUserById(tokenUser.id);
+  const user = await findUserById(tokenUser.id);
   return user ? toSafeUser(user) : undefined;
 }
 
@@ -65,7 +65,7 @@ export async function refreshAuthCookies() {
 
   const tokenUser = await verifyRefreshToken(refreshToken);
   if (!tokenUser) return undefined;
-  const user = findUserById(tokenUser.id);
+  const user = await findUserById(tokenUser.id);
   if (!user) return undefined;
 
   const safeUser = toSafeUser(user);

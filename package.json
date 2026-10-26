@@ -11,23 +11,22 @@
   "dependencies": {
     "@tanstack/react-table": "^8.21.3",
     "bcrypt": "^6.0.0",
-    "better-sqlite3": "^12.4.1",
     "jose": "^6.2.13",
     "next": "16.4.3",
+    "pg": "^8.23.1",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
-    "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^22.15.29",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.6",
     "typescript": "^5.8.3"
   },
   "allowScripts": {
-    "better-sqlite3@12.11.1": true,
     "bcrypt@6.0.0": true
   }
 }

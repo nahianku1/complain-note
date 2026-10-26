@@ -28,7 +28,7 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
   }
 
   try {
-    return NextResponse.json({ complaintType: updateComplaintType(id, name) });
+    return NextResponse.json({ complaintType: await updateComplaintType(id, name) });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unable to update complaint type.";
     return NextResponse.json({ error: message }, { status: message === "Complaint type not found." ? 404 : 409 });
@@ -44,7 +44,7 @@ export async function DELETE(_request: Request, context: { params: Promise<{ id:
   }
 
   try {
-    return NextResponse.json({ deletedType: deleteComplaintType(id) });
+    return NextResponse.json({ deletedType: await deleteComplaintType(id) });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unable to delete complaint type.";
     return NextResponse.json({ error: message }, { status: message === "Complaint type not found." ? 404 : 409 });
