@@ -368,7 +368,7 @@ export default function ComplaintDashboard({ user }: { user: AuthUser }) {
             <div className="brand-mark"><Icon name="pulse" /></div>
             <div>
               <p className="eyebrow">Operations console</p>
-              <h1>PulseDesk</h1>
+               <h1>ComplainDesk</h1>
             </div>
           </div>
           <div className="topbar-actions">

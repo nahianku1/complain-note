@@ -87,13 +87,13 @@ export default function AuthForm({ mode }: { mode: AuthMode }) {
       <div className="ambient ambient-two" />
       <section className="auth-layout">
         <div className="auth-brand-panel">
-          <div className="brand-lockup auth-brand-lockup"><div className="brand-mark"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12h4l2-7 4 14 2-7h6" /></svg></div><div><p className="eyebrow">Operations console</p><h1>PulseDesk</h1></div></div>
+           <div className="brand-lockup auth-brand-lockup"><div className="brand-mark"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12h4l2-7 4 14 2-7h6" /></svg></div><div><p className="eyebrow">Operations console</p><h1>ComplainDesk</h1></div></div>
           <div className="auth-hero-copy"><p className="eyebrow gradient-eyebrow">Local-first ISP operations</p><h2>{isSignup ? "Turn customer signals into action." : "Welcome back to your network desk."}</h2><p>Keep every complaint, context, and resolution close to the team that responds.</p></div>
           <div className="auth-benefits"><div><span className="benefit-icon">✦</span><span><strong>Focused workspace</strong><small>See the network context behind every complaint.</small></span></div><div><span className="benefit-icon">⌁</span><span><strong>Private by design</strong><small>Your local operations data stays on this device.</small></span></div></div>
         </div>
 
         <section className="auth-card" aria-labelledby="auth-title">
-          <div className="auth-card-header"><p className="eyebrow gradient-eyebrow">{isSignup ? "Create your workspace access" : "Secure workspace access"}</p><h2 id="auth-title">{isSignup ? "Create an account" : "Sign in to PulseDesk"}</h2><p>{isSignup ? "Set up your operator profile in a few seconds." : "Enter your details to continue to complaint notes."}</p></div>
+           <div className="auth-card-header"><p className="eyebrow gradient-eyebrow">{isSignup ? "Create your workspace access" : "Secure workspace access"}</p><h2 id="auth-title">{isSignup ? "Create an account" : "Sign in to ComplainDesk"}</h2><p>{isSignup ? "Set up your operator profile in a few seconds." : "Enter your details to continue to complaint notes."}</p></div>
           {serverError && <div className="auth-alert" role="alert"><span className="auth-alert-icon">!</span><span>{serverError}</span></div>}
           <form className="auth-form" onSubmit={handleSubmit} noValidate>
             {isSignup ? <>
@@ -108,7 +108,7 @@ export default function AuthForm({ mode }: { mode: AuthMode }) {
             </>}
             <button className="primary-button auth-submit" type="submit" disabled={isSubmitting}>{isSubmitting ? (isSignup ? "Creating account…" : "Signing in…") : isSignup ? "Create account" : "Sign in"}<span>→</span></button>
           </form>
-          <p className="auth-switch">{isSignup ? "Already have an account?" : "New to PulseDesk?"} <a href={isSignup ? "/login" : "/signup"}>{isSignup ? "Sign in" : "Create an account"}</a></p>
+           <p className="auth-switch">{isSignup ? "Already have an account?" : "New to ComplainDesk?"} <a href={isSignup ? "/login" : "/signup"}>{isSignup ? "Sign in" : "Create an account"}</a></p>
           <p className="auth-privacy">By continuing, you agree to keep your workspace credentials private.</p>
         </section>
       </section>
