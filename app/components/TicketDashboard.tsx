@@ -101,11 +101,13 @@ function MemberBadge({
   mobile1,
   mobile2,
   whatsappNumber,
+  waMessage,
 }: {
   name: string;
   mobile1?: string;
   mobile2?: string;
   whatsappNumber?: string;
+  waMessage?: string;
 }) {
   const initials =
     name
@@ -151,7 +153,7 @@ function MemberBadge({
       {whatsappNumber && (
         <a
           className="contact-action-button whatsapp team-member-wa"
-          href={`https://wa.me/${wa}`}
+          href={waMessage ? `https://wa.me/${wa}?text=${encodeURIComponent(waMessage)}` : `https://wa.me/${wa}`}
           target="_blank"
           rel="noreferrer"
           aria-label={`WhatsApp ${name} (${whatsappNumber})`}
@@ -437,8 +439,16 @@ export default function TicketDashboard({ user }: { user: AuthUser }) {
       accessorKey: "assignedTo",
       header: "Assigned to",
       cell: ({ row }) => {
-        const { assignedTo, assignedType, assignedId } = row.original;
+        const { assignedTo, assignedType, assignedId, userId, phoneNumber, address, ticketType } = row.original;
         if (!assignedTo) return <span className="muted-cell">Unassigned</span>;
+
+        const waMessage = [
+          `Ticket: ${ticketType}`,
+          `Customer: ${userId}`,
+          `Mobile: ${phoneNumber}`,
+          `Address: ${address || "—"}`,
+          `Assigned by: ${user.username}`,
+        ].join("\n");
 
         const isTech = assignedType === "technician" || (!assignedType && techByName.has(assignedTo.toLowerCase().trim()));
         const isTeam = assignedType === "team" || (!assignedType && teamByName.has(assignedTo.toLowerCase().trim()));
@@ -452,6 +462,7 @@ export default function TicketDashboard({ user }: { user: AuthUser }) {
                 mobile1={tech?.mobile1}
                 mobile2={tech?.mobile2}
                 whatsappNumber={tech?.whatsappNumber}
+                waMessage={waMessage}
               />
             </div>
           );
@@ -474,6 +485,7 @@ export default function TicketDashboard({ user }: { user: AuthUser }) {
                       mobile1={member.mobile1}
                       mobile2={member.mobile2}
                       whatsappNumber={member.whatsappNumber}
+                      waMessage={waMessage}
                     />
                   ))}
                 </div>
