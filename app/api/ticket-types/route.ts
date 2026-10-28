@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "../../../lib/auth";
-import { createComplaintType, getComplaintTypes } from "../../../lib/db";
+import { createTicketType, getTicketTypes } from "../../../lib/db";
 
 export const runtime = "nodejs";
 
 export async function GET() {
   if (!(await getCurrentUser())) return NextResponse.json({ error: "Authentication required." }, { status: 401 });
-  return NextResponse.json({ complaintTypes: await getComplaintTypes() });
+  return NextResponse.json({ ticketTypes: await getTicketTypes() });
 }
 
 export async function POST(request: Request) {
@@ -15,16 +15,16 @@ export async function POST(request: Request) {
   const name = typeof body.name === "string" ? body.name.trim() : "";
 
   if (!name) {
-    return NextResponse.json({ error: "Complaint type name is required." }, { status: 400 });
+    return NextResponse.json({ error: "Ticket type name is required." }, { status: 400 });
   }
 
   if (name.length > 60) {
-    return NextResponse.json({ error: "Complaint type name must be 60 characters or fewer." }, { status: 400 });
+    return NextResponse.json({ error: "Ticket type name must be 60 characters or fewer." }, { status: 400 });
   }
 
   try {
-    return NextResponse.json({ complaintType: await createComplaintType(name) }, { status: 201 });
+    return NextResponse.json({ ticketType: await createTicketType(name) }, { status: 201 });
   } catch (error) {
-    return NextResponse.json({ error: error instanceof Error ? error.message : "Unable to save complaint type." }, { status: 409 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : "Unable to save ticket type." }, { status: 409 });
   }
 }
